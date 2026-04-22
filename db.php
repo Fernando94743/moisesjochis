@@ -5,8 +5,8 @@
 // Prueba segundo commit
 function conectarDB() {
     $host = "localhost";
-    $db   = "abrahamarizmendi_db";
-    $user = "aarizmendi";      //Usuario en la base de datos
+    $db   = "libreria";
+    $user = "moises";      //Usuario en la base de datos
     $pass = "123456";
     $charset = "utf8mb4";
 
