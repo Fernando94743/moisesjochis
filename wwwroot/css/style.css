@@ -1,4 +1,84 @@
-body{
-/*    background-color: var(--bs-cyan);*/
-    
+/* ============================================================ */
+/* --- ESTILO PARA EL PANEL INTERNO (DARK MODE) --- */
+/* Aplica si el body NO tiene la clase 'login-page' */
+/* ============================================================ */
+
+body:not(.login-page) {
+    background-color: #0f172a !important; /* Azul muy oscuro */
+    color: #f8fafc !important; /* Texto claro */
+}
+
+/* Header */
+body:not(.login-page) .navbar-custom {
+    background-color: #1e293b !important;
+    border-bottom: 2px solid #3b82f6 !important;
+}
+
+/* Menú Lateral */
+body:not(.login-page) .sidebar {
+    background-color: #1e293b !important;
+    border-right: 1px solid #334155 !important;
+}
+
+body:not(.login-page) .nav-link {
+    color: #94a3b8 !important;
+}
+
+body:not(.login-page) .nav-link.active {
+    background-color: #3b82f6 !important;
+    color: white !important;
+}
+
+/* Tarjetas y Tablas Oscuras */
+body:not(.login-page) .card {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: white !important;
+}
+
+body:not(.login-page) .table {
+    color: #f8fafc !important;
+}
+
+body:not(.login-page) .table-light,
+body:not(.login-page) thead {
+    background-color: #334155 !important;
+    color: #06b6d4 !important;
+}
+
+/* Inputs Oscuros para el panel */
+body:not(.login-page) .form-control {
+    background-color: #0f172a !important;
+    border: 1px solid #334155 !important;
+    color: white !important;
+}
+
+
+/* ============================================================ */
+/* --- ESTILO PARA LOGIN Y REGISTRO (CLARO) --- */
+/* Aplica si el body TIENE la clase 'login-page' */
+/* ============================================================ */
+
+body.login-page {
+    background-color: #f4f7f6 !important;
+    color: #333 !important;
+}
+
+/* Forzar que la tarjeta sea blanca y legible */
+body.login-page .login-card {
+    background-color: white !important;
+    color: #333 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    border: none !important;
+}
+
+/* Asegurar que los labels e inputs se distingan */
+body.login-page label.form-label {
+    color: #333 !important;
+}
+
+body.login-page .form-control {
+    background-color: white !important;
+    color: #333 !important;
+    border: 1px solid #ced4da !important;
 }
