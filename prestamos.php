@@ -1,6 +1,13 @@
 <?php
 session_start();
-// require_once 'db.php'; 
+
+// EL CADENERO: Si no hay sesión, pa' fuera.
+if (!isset($_SESSION['usuario'])) {
+    header("Location: index.php"); // Cambia index.php por tu archivo de login si es necesario
+    exit();
+}
+
+// require_once 'db.php';
 // AQUI VA TU LÓGICA PHP PARA LLENAR LOS SELECTS Y LA TABLA
 ?>
 <!doctype html>
@@ -11,7 +18,7 @@ session_start();
     <title>Gestión de Préstamos - Jochis</title>
     <link href="./wwwroot/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./wwwroot/css/bootstrap-icons.min.css">
-    
+
     <style>
         body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .sidebar { background-color: #1e1e2f; min-height: 100vh; width: 260px; position: fixed; }
@@ -26,7 +33,7 @@ session_start();
         .form-select:focus, .form-control:focus { box-shadow: none; border-color: #4e73df; }
         .btn-brand { background-color: #4e73df; color: white; font-weight: 600; border-radius: 8px; padding: 10px 20px; border: none; transition: 0.3s; }
         .btn-brand:hover { background-color: #2e59d9; color: white; box-shadow: 0 4px 10px rgba(78, 115, 223, 0.3); }
-        
+
         /* Estilos de Tabla */
         .table th { background-color: #f8f9fa; color: #858796; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; border-bottom: none; }
         .table td { vertical-align: middle; color: #5a5c69; border-bottom: 1px solid #f1f3f5; padding: 15px 10px;}
@@ -34,7 +41,6 @@ session_start();
 </head>
 <body>
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <h4 class="fw-bold"><i class="bi bi-book-half text-primary me-2"></i> Jochis Lib</h4>
         <a href="alta_autor.php"><i class="bi bi-person-badge me-2"></i> Autores</a>
@@ -42,7 +48,6 @@ session_start();
         <a href="prestamos.php" class="active"><i class="bi bi-arrow-left-right me-2"></i> Préstamos</a>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
         <div class="topbar">
             <h5 class="mb-0 fw-bold text-dark" style="letter-spacing: -0.5px;">Control de Préstamos</h5>
@@ -52,26 +57,23 @@ session_start();
         </div>
 
         <div class="container-fluid px-4">
-            
-            <!-- TARJETA DEL FORMULARIO -->
+
             <div class="card card-custom mb-5">
                 <div class="card-body p-4">
                     <h6 class="fw-bold mb-4" style="color: #4e73df;"><i class="bi bi-bookmark-check me-1"></i> Registrar Préstamo</h6>
-                    
+
                     <form action="guardar_prestamo.php" method="POST" class="row g-3 align-items-end">
                         <div class="col-md-5">
                             <label class="form-label fw-bold">Usuario</label>
                             <select class="form-select" name="usuario" required>
                                 <option value="" selected disabled>Selecciona un usuario...</option>
-                                <!-- AQUI VA TU PHP PARA LLENAR LOS USUARIOS -->
                                 <option value="1">Jochis</option>
                             </select>
                         </div>
                         <div class="col-md-5">
                             <label class="form-label fw-bold">Libro</label>
                             <select class="form-select" name="libro" required>
-                                <option value="" selected disabled>Selecciona un libro...</option>
-                                <!-- AQUI VA TU PHP PARA LLENAR LOS LIBROS -->
+                                <option value="" selected disabled>Selecciona un libro...</option>                                
                                 <option value="1">La niña del aro</option>
                             </select>
                         </div>
@@ -82,7 +84,6 @@ session_start();
                 </div>
             </div>
 
-            <!-- TARJETA DEL HISTORIAL (TABLA) -->
             <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-clock-history me-1"></i> Historial de préstamos</h6>
             <div class="card card-custom">
                 <div class="card-body p-0">
@@ -96,7 +97,6 @@ session_start();
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- AQUI VA TU CICLO PHP PARA LLENAR LA TABLA DE PRÉSTAMOS -->
                                 <tr>
                                     <td class="ps-4 fw-bold text-dark">Jochis</td>
                                     <td>La niña del aro</td>
@@ -107,12 +107,12 @@ session_start();
                                     <td>Postgresql</td>
                                     <td><span class="badge bg-light text-dark border">2026-04-24 21:45:39</span></td>
                                 </tr>
-                            </tbody>
+                            </tbody>                        
                         </table>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </body>

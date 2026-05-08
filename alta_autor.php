@@ -1,6 +1,13 @@
 <?php
 session_start();
-// require_once 'db.php'; 
+
+// EL CADENERO: Seguridad para que no entren si no han iniciado sesión
+if (!isset($_SESSION['usuario'])) {
+    header("Location: index.php"); // Cambia a tu archivo de login si se llama distinto
+    exit();
+}
+
+// require_once 'db.php';
 // AQUI VA TU LÓGICA PHP PARA GUARDAR EL AUTOR (si la tienes en el mismo archivo)
 ?>
 <!doctype html>
@@ -11,7 +18,7 @@ session_start();
     <title>Gestión de Autores - Jochis</title>
     <link href="./wwwroot/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./wwwroot/css/bootstrap-icons.min.css">
-    
+
     <style>
         body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .sidebar { background-color: #1e1e2f; min-height: 100vh; width: 260px; position: fixed; }
@@ -30,7 +37,6 @@ session_start();
 </head>
 <body>
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <h4 class="fw-bold"><i class="bi bi-book-half text-primary me-2"></i> Jochis Lib</h4>
         <a href="alta_autor.php" class="active"><i class="bi bi-person-badge me-2"></i> Autores</a>
@@ -38,7 +44,6 @@ session_start();
         <a href="prestamos.php"><i class="bi bi-arrow-left-right me-2"></i> Préstamos</a>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
         <div class="topbar">
             <h5 class="mb-0 fw-bold text-dark" style="letter-spacing: -0.5px;">Panel de Autores</h5>
@@ -53,8 +58,7 @@ session_start();
                     <div class="card card-custom mb-4">
                         <div class="card-body p-4">
                             <h6 class="fw-bold mb-4" style="color: #4e73df;"><i class="bi bi-person-plus me-1"></i> Registrar Nuevo Autor</h6>
-                            
-                            <!-- Ajusta el action a donde procesas el guardado -->
+
                             <form action="registrar_autor.php" method="POST">
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Nombre del autor</label>

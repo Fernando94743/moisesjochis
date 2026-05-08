@@ -25,12 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 3. Insertar nuevo usuario (aquí guardamos la contraseña tal cual por ahora)
         $sql = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        
+
         if ($stmt->execute([$nombre, $email, $pwd])) {
-            echo "<script>alert('Cuenta creada con éxito. Ya puedes iniciar sesión.'); window.location='index.html';</script>";
+            // AQUI ESTA LA CORRECCION: Ahora te manda a index.php
+            echo "<script>alert('Cuenta creada con éxito. Ya puedes iniciar sesión.'); window.location='index.php';</script>";
         } else {
             echo "Error al crear la cuenta.";
         }
     }
 }
 ?>
+
