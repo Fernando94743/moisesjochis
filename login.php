@@ -1,9 +1,9 @@
 <?php
-// ¡El session_start siempre debe ir hasta arriba!
+// 1. ¡El session_start siempre debe ir hasta arriba!
 session_start();
 require_once 'db.php';
 
-// Verificamos que se hayan enviado datos por el formulario
+// 2. Verificamos que los datos vengan por POST (desde el formulario)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $pwd = $_POST['pwd'];
@@ -11,39 +11,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = conectarDB();
 
     try {
+        // Buscamos al usuario por su email
         $sql = "SELECT id_usuario, password, email FROM usuarios WHERE email = :email";
         $query = $db->prepare($sql);
-
-        // Ejecutamos pasando el email
-        $query->execute(['email'  => $email]);
+        $query->execute(['email' => $email]);
         $usuario = $query->fetch(PDO::FETCH_ASSOC);
 
-        if($usuario){
-            // Comparamos la contraseña (texto plano, como la guardaste en el registro)
-            if($pwd == $usuario['password']){
+        if ($usuario) {
+            // 3. Comparamos la contraseña (texto plano como lo tienes en tu registro)
+            if ($pwd == $usuario['password']) {
 
-                // ¡CORRECCIÓN CRÍTICA! Le llamamos 'usuario' para que el Cadenero lo deje pasar
-                $_SESSION['usuario'] = $usuario['email'];
+                // --- INICIO DE SESIÓN EXITOSO ---
+
+                // A. Creamos las variables de sesión
+                $_SESSION['usuario'] = $usuario['email']; // El gafete para que el "cadenero" te deje pasar
                 $_SESSION['id_usuario'] = $usuario['id_usuario'];
 
-                // MAGIA DE LA COOKIE (Rúbrica: Recordar correo)
-                if (isset($_POST['recordar'])) { 
-                    setcookie("correo_jochis", $email, time() + (86400 * 30), "/"); 
+                // B. LÓGICA DE LAS IMÁGENES (Cookie de Auto-Login)
+                // Esto guarda tu ID en el navegador por 30 días
+                $cookie_name = "id_usuario";
+                $cookie_value = $usuario['id_usuario'];
+                $expiry = time() + (86400 * 30); // 30 días en segundos
+                setcookie($cookie_name, $cookie_value, $expiry, "/");
+
+                // C. COOKIE DE "RECORDAR CORREO" (Para el checkbox de tu diseño)
+                if (isset($_POST['recordar'])) {
+                    setcookie("correo_jochis", $email, time() + (86400 * 30), "/");
                 } else {
-                    setcookie("correo_jochis", "", time() - 3600, "/"); 
+                    // Si no marcó la casilla, borramos la cookie de correo por si existía
+                    setcookie("correo_jochis", "", time() - 3600, "/");
                 }
 
-                // Redirigimos al panel con pase VIP
+                // D. Redirigimos al panel de libros
                 header("Location: alta_libro.php");
-                exit(); 
+                exit();
 
             } else {
-                // Si la contraseña está mal, lo regresamos con alerta
+                // Contraseña incorrecta
                 echo "<script>alert('La contraseña es incorrecta.'); window.location='index.php';</script>";
             }
 
         } else {
-            // Si el correo no existe, lo regresamos con alerta
+            // Usuario no encontrado
             echo "<script>alert('No se encontró ninguna cuenta con ese correo.'); window.location='index.php';</script>";
         }
 
@@ -51,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Database Error: " . $e->getMessage();
     }
 } else {
-    // Si intentan entrar a este archivo directo por la URL, los rebotamos
+    // Si alguien intenta entrar a este archivo directo por la URL, lo mandamos al login
     header("Location: index.php");
     exit();
 }

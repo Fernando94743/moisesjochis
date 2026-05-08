@@ -1,6 +1,24 @@
 <?php
+session_start();
+
+// --- LÓGICA DE AUTO-LOGIN (Imagen 2 del Profe) ---
+// ¿Existe una cookie llamada id_usuario?
+if(isset($_COOKIE["id_usuario"])) {
+    /* A la variable de sesión llamada id_usuario le asignamos el valor 
+       que tiene la cookie llamada id_usuario */
+    $_SESSION['id_usuario'] = $_COOKIE["id_usuario"];
+    
+    // Le damos este valor a 'usuario' para que tu Cadenero lo deje pasar al panel
+    $_SESSION['usuario'] = "usuario_reconocido_por_cookie";
+
+    // Finalmente direccionamos al usuario a la página dashboard (alta_libro.php)
+    header("Location: alta_libro.php");
+    exit();
+}
+
+// --- LÓGICA DE RECORDAR CORREO (Checkbox) ---
 // Leemos la cookie si existe
-$email_guardado = isset($_COOKIE['usuario_email']) ? $_COOKIE['usuario_email'] : '';
+$email_guardado = isset($_COOKIE['correo_jochis']) ? $_COOKIE['correo_jochis'] : '';
 ?>
 <!doctype html>
 <html lang="es">
@@ -27,7 +45,6 @@ $email_guardado = isset($_COOKIE['usuario_email']) ? $_COOKIE['usuario_email'] :
                         <form action="login.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label fw-bold">Email</label>
-                                <!-- Se inyecta la variable de la cookie en el atributo value -->
                                 <input type="email" class="form-control" id="email" name="email" placeholder="nombre@ejemplo.com" value="<?php echo htmlspecialchars($email_guardado); ?>" required>
                             </div>
                             <div class="mb-3">
@@ -35,10 +52,9 @@ $email_guardado = isset($_COOKIE['usuario_email']) ? $_COOKIE['usuario_email'] :
                                 <input class="form-control" type="password" id="pwd" name="pwd" placeholder="••••••••" required>
                             </div>
 
-                            <!-- NUEVO: Checkbox de la cookie para guardar el correo -->
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="recuerdame" name="recuerdame" <?php if($email_guardado != '') echo 'checked'; ?>>
-                                <label class="form-check-label text-muted" for="recuerdame">Recordar mi correo electrónico</label>
+                                <input type="checkbox" class="form-check-input" id="recordar" name="recordar" <?php if($email_guardado != '') echo 'checked'; ?>>
+                                <label class="form-check-label text-muted" for="recordar">Recordar mi correo electrónico</label>
                             </div>
 
                             <div class="d-grid gap-2 py-3">
